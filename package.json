@@ -1,0 +1,16 @@
+{
+  "name": "se-primer",
+  "version": "1.0.0",
+  "description": "YZM301 Odev: SE Primer - Kisiye Uyum Saglayan Yazilim Muhendisligi Kitabi",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server.js",
+    "eval": "node eval/run_eval.js",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "test": "node run-e2e.js"
+  },
+  "devDependencies": {
+    "cypress": "15.21.1"
+  }
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SE Primer — Yazılım Mühendisliği Karar Simülasyonu</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="mobile-shell" data-cy="app-shell">
+    <!-- Üst Bilgi Çubuğu -->
+    <header class="app-header">
+      <div class="brand-badge">
+        <span class="brand-icon" aria-hidden="true">📖</span>
+        <div>
+          <span class="brand-title">SE Primer</span>
+          <span class="brand-sub">YZM301 · Oynanan Mühendislik Kitabı</span>
+        </div>
+      </div>
+      <span class="clock-badge" id="header-clock" data-cy="header-clock">08:00 · KRİZ</span>
+    </header>
+
+    <!-- EKRAN 1: GİRİŞ VE KİŞİSELLEŞTİRME (3 SORU) -->
+    <main id="screen-onboarding" class="screen-container" data-cy="screen-onboarding">
+      <section class="hero-card">
+        <div class="hero-eyebrow">SAĞLIK SENARYOSU · NÖBETÇİ MÜHENDİS</div>
+        <h1 class="hero-title" data-cy="hero-title">“08:00, randevu sistemi çöktü. Nöbetçi sensin.”</h1>
+        <p class="hero-desc">
+          Dün gece yeni sürüm (v2.4.0) çıktı. Poliklinik önünde <strong>300 hasta</strong> bekliyor.
+          Kitabın anlatıyı sana uyarlaması için aşağıdaki 3 soruyu yanıtla:
+        </p>
+      </section>
+
+      <!-- Soru 1: Seviye -->
+      <section class="question-card" data-cy="question-level">
+        <label class="question-label">1. Seviyen nedir?</label>
+        <div class="option-grid">
+          <button type="button" class="option-pill selected" data-group="level" data-value="Yeni başladım" data-cy="level-beginner">
+            <span class="option-pill-title">🌱 Yeni başladım</span>
+            <span class="option-pill-sub">Her kararda teknik ipucu görürsün, süre sınırı yoktur.</span>
+          </button>
+          <button type="button" class="option-pill" data-group="level" data-value="Deneyimliyim" data-cy="level-experienced">
+            <span class="option-pill-title">⚡ Deneyimliyim</span>
+            <span class="option-pill-sub">İpucu gizlenir; 60 saniyelik süre baskısı altında karar verirsin.</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Soru 2: Rol -->
+      <section class="question-card" data-cy="question-role">
+        <label class="question-label">2. Nöbetteki rolün nedir?</label>
+        <div class="option-grid">
+          <button type="button" class="option-pill selected" data-group="role" data-value="Backend Mühendisi" data-cy="role-backend">
+            <span class="option-pill-title">🛠️ Backend Mühendisi</span>
+            <span class="option-pill-sub">Odak: Veritabanı şeması, API uyumluluğu ve sorgu bütünlüğü.</span>
+          </button>
+          <button type="button" class="option-pill" data-group="role" data-value="SRE / DevOps" data-cy="role-sre">
+            <span class="option-pill-title">🚀 SRE / DevOps</span>
+            <span class="option-pill-sub">Odak: CI/CD boru hattı, konteyner rollback ve kesintisiz dağıtım.</span>
+          </button>
+          <button type="button" class="option-pill" data-group="role" data-value="Güvenlik / KVKK Uzmanı" data-cy="role-security">
+            <span class="option-pill-title">🛡️ Güvenlik / KVKK Uzmanı</span>
+            <span class="option-pill-sub">Odak: 6698 sayılı KVKK, hasta mahremiyeti ve log maskeleme.</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Soru 3: Hedef -->
+      <section class="question-card" data-cy="question-goal">
+        <label class="question-label">3. Bu krizdeki birincil hedefin nedir?</label>
+        <div class="option-grid">
+          <button type="button" class="option-pill selected" data-group="goal" data-value="Sistem Sürekliliği (Uptime)" data-cy="goal-uptime">
+            <span class="option-pill-title">⏱️ Sistem Sürekliliği (Uptime)</span>
+            <span class="option-pill-sub">300 hastanın randevu akışını en güvenli ve hızlı şekilde açmak.</span>
+          </button>
+          <button type="button" class="option-pill" data-group="goal" data-value="Veri Güvenliği ve KVKK Uyum" data-cy="goal-kvkk">
+            <span class="option-pill-title">🔒 Veri Güvenliği ve KVKK Uyum</span>
+            <span class="option-pill-sub">Kriz anında bile hiçbir hasta verisinin (PII) sızmamasını sağlamak.</span>
+          </button>
+          <button type="button" class="option-pill" data-group="goal" data-value="Hızlı Kök Neden Analizi" data-cy="goal-rca">
+            <span class="option-pill-title">🔍 Hızlı Kök Neden Analizi</span>
+            <span class="option-pill-sub">Regresyon üretmeden hatayı izole edip doğrulamak.</span>
+          </button>
+        </div>
+      </section>
+
+      <button type="button" id="btn-start-game" class="btn-primary" data-cy="btn-start-game">
+        Nöbete Başla (08:00) →
+      </button>
+    </main>
+
+    <!-- EKRAN 2: SAHNE, KARAR VE SOKRATİK AI TUTOR -->
+    <main id="screen-scene" class="screen-container hidden" data-cy="screen-scene">
+      <div class="status-bar">
+        <span id="step-indicator" class="step-indicator" data-cy="step-indicator">KARAR 1/3 · MİMARİ</span>
+        <span id="timer-badge" class="timer-badge hidden" data-cy="timer-badge">⏱ 60 sn</span>
+      </div>
+
+      <div id="profile-summary-bar" class="profile-summary-bar" data-cy="profile-summary-bar"></div>
+
+      <section class="scene-card">
+        <h2 id="scene-title" class="scene-title" data-cy="scene-title">KARAR 1 · MİMARİ</h2>
+        <p id="scene-narrative" class="scene-narrative" data-cy="scene-narrative"></p>
+        <pre id="scene-log" class="log-terminal" data-cy="scene-log"></pre>
+
+        <!-- Yeni Başladım Modu İpucu Kutusu -->
+        <div id="beginner-hint-card" class="beginner-hint-card hidden" data-cy="beginner-hint-card">
+          <span class="beginner-hint-title">💡 Başlangıç Rehberi (Seviye: Yeni başladım)</span>
+          <span id="beginner-hint-text" data-cy="beginner-hint-text"></span>
+        </div>
+      </section>
+
+      <!-- Karar Butonları (A ve B) -->
+      <section class="decision-options" data-cy="decision-options">
+        <button type="button" id="btn-choice-a" class="decision-btn" data-cy="btn-choice-a">
+          <span class="choice-letter">A</span>
+          <span id="choice-a-text" class="choice-text" data-cy="choice-a-text"></span>
+        </button>
+        <button type="button" id="btn-choice-b" class="decision-btn" data-cy="btn-choice-b">
+          <span class="choice-letter">B</span>
+          <span id="choice-b-text" class="choice-text" data-cy="choice-b-text"></span>
+        </button>
+      </section>
+
+      <!-- Seçim Sonrası: Ne Oldu & Neden Oldu Kartı -->
+      <section id="feedback-card" class="feedback-card hidden" data-cy="feedback-card">
+        <div class="feedback-section">
+          <span class="feedback-label">📌 Ne oldu? (Teknik Sonuç)</span>
+          <p id="feedback-what" data-cy="feedback-what"></p>
+        </div>
+        <div class="feedback-section">
+          <span class="feedback-label">⚙️ Neden oldu? (Mühendislik Prensibi)</span>
+          <p id="feedback-why" data-cy="feedback-why"></p>
+        </div>
+        <button type="button" id="btn-next-step" class="btn-primary" data-cy="btn-next-step">
+          Sonraki Karara Geç →
+        </button>
+      </section>
+
+      <!-- Sokratik AI Tutor Paneli -->
+      <section class="tutor-card" data-cy="tutor-card">
+        <div class="tutor-header">
+          <span class="tutor-badge">💬 Sokratik AI Tutor</span>
+          <span class="tutor-rule-tag">İpucu verir, cevabı vermez</span>
+        </div>
+        <div id="tutor-messages" class="tutor-messages" data-cy="tutor-messages"></div>
+        <div class="tutor-input-row">
+          <input
+            type="text"
+            id="tutor-input"
+            class="tutor-input"
+            placeholder="Tutor'a düşünceni yaz veya soru sor..."
+            data-cy="tutor-input"
+          />
+          <button type="button" id="tutor-send-btn" class="tutor-send-btn" data-cy="tutor-send-btn">
+            Sor
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- EKRAN 3: SONUÇ VE TEKNİK KARNE -->
+    <main id="screen-ending" class="screen-container hidden" data-cy="screen-ending">
+      <section id="ending-banner" class="ending-banner" data-cy="ending-banner">
+        <div id="ending-code" class="ending-tag" data-cy="ending-code">SON A · İYİ</div>
+        <h2 id="ending-headline" class="ending-headline" data-cy="ending-headline">08:25 sistem ayakta, veri güvende</h2>
+        <p id="ending-summary" class="ending-summary" data-cy="ending-summary"></p>
+      </section>
+
+      <section class="question-card">
+        <span class="question-label">Kişiselleştirilmiş Mühendislik Değerlendirmesi</span>
+        <p id="ending-personal-eval" class="scene-narrative" data-cy="ending-personal-eval"></p>
+      </section>
+
+      <section class="question-card">
+        <span class="question-label">Durum Geçiş Özeti (3 Karar)</span>
+        <div id="ending-timeline" class="timeline-list" data-cy="ending-timeline"></div>
+      </section>
+
+      <button type="button" id="btn-restart" class="btn-primary" data-cy="btn-restart">
+        Baştan Oyna (Yeni Senaryo Yolu Dene)
+      </button>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
