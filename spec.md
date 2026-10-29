@@ -127,7 +127,7 @@ flowchart TD
 - **Beklenen Sonuç (Then):** AI Tutor yanıtında `"A şıkkını seç"` veya `"B şıkkı doğrudur"` gibi doğrudan bir cevap **kesinlikle yer almaz**; bunun yerine oyuncuyu düşünmeye sevk eden Sokratik bir soru sorar (ör. *"Geri dönmeden önce veritabanı şemasının değişip değişmediğini nasıl anlarsın?"*).
 
 ### Kabul Örneği 5: Arkadaş Testinden Çıkan Görünmez Varsayım — "Ne Oldu / Neden Oldu" Okunmadan Ekranın Atlanmaması
-> *Ödev İpucu Uygulaması: Uygulama bir arkadaşa oynatıldığında, arkadaşımız şıkkı tıkladığı anda ekranın aniden sonraki soruya geçmesi yüzünden kararının sonucunu göremediğini belirtti. Bu görünmez varsayım kabul kriterine dönüştürüldü.*
+> **Arkadaş testi — YAPILACAK:** Uygulamayı bir arkadaşına oynat ve neyi yanlış anladığını/nerede takıldığını not al. Aşağıdaki kriter, böyle bir testte çıkması beklenen bir varsayım örneğidir; testi yaptıktan sonra bu kutuyu arkadaşının gerçek gözlemiyle değiştir (veya bu örnek gerçekten yaşandıysa öyle yaz).
 
 - **Önkoşul (Given):** Oyuncu herhangi bir karar aşamasındadır (`Karar 1`, `Karar 2` veya `Karar 3`).
 - **Eylem (When):** Oyuncu `A` veya `B` butonuna tıklar.

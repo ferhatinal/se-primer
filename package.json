@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node server.js",
-    "eval": "node eval/run_eval.js",
+    "eval": "node eval/ozet.js",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test": "node run-e2e.js",

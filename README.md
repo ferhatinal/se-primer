@@ -21,8 +21,8 @@
 | :--- | :--- | :--- | :---: |
 | **1. `spec.md`** | Problem, kapsam dışı, 5 kabul örneği, akış şeması | [`spec.md`](./spec.md) | 20 |
 | **2. Tasarım** | Stitch ekranları (3 mobil ekran) + `DESIGN.md` | [`DESIGN.md`](./DESIGN.md) & [`design/screens/`](./design/screens/) | 15 |
-| **3. Çalışan Uygulama** | Telefonda baştan sona oynanan uygulama (AI Studio / Web) | [`index.html`](./index.html), [`app.js`](./app.js), [`styles.css`](./styles.css) | 20 |
-| **4. Tutor Eval** | 20 öğrenci cevabı, elle etiketleme, hata türleri, oran + örnek sayısı | [`eval/README.md`](./eval/README.md) & [`eval/tutor_eval_20_cases.csv`](./eval/tutor_eval_20_cases.csv) | 25 |
+| **3. Çalışan Uygulama** | Telefonda baştan sona oynanan uygulama (AI Studio / Web) | [AI Studio uygulaması](https://ai.studio/apps/9872d2c1-2731-44e6-ad04-04d394d1843a) (Gemini destekli Sokratik Tutor) · Yerel web sürümü (Cypress testleri bu sürümde koşar; tutor'u kural tabanlıdır): [`index.html`](./index.html), [`app.js`](./app.js), [`styles.css`](./styles.css) | 20 |
+| **4. Tutor Eval** | 20 öğrenci cevabı, elle etiketleme, hata türleri, oran + örnek sayısı | [`eval/README.md`](./eval/README.md), [`eval/etiketleme.csv`](./eval/etiketleme.csv), [`eval/SONUC.md`](./eval/SONUC.md) | 25 |
 | **5. Cypress Demo** | Tüm yollar E2E test edilmiş; koşudan 60 sn demo video | [`cypress/e2e/se-primer.cy.js`](./cypress/e2e/se-primer.cy.js) & [`cypress/videos/`](./cypress/videos/) | 10 |
 | **6. Ürün Kararı** | `README.md`: Yapmadığın 3 özellik, her biri tek cümle neden | Yukarıdaki [Ürün Kararı](#-ürün-kararı-yapmadığım-3-özellik-ve-tek-cümle-nedenleri) bölümü | 10 |
 | **TOPLAM** | **Tek Repo, Üç Link** | **Tamamlandı** | **100** |
@@ -32,7 +32,7 @@
 ## 🔗 Üç Teslim Linki
 
 - **1. GitHub Repo Linki:** `[GitHub Repo URL'nizi buraya ekleyin]`
-- **2. Google AI Studio Uygulama Linki:** `[Google AI Studio Share URL'nizi buraya ekleyin]` *(Google AI Studio kurulum şablonu: [`ai-studio-prompt.md`](./ai-studio-prompt.md))*
+- **2. Google AI Studio Uygulama Linki:** https://ai.studio/apps/9872d2c1-2731-44e6-ad04-04d394d1843a *(Stitch → Export → AI Studio ile oluşturuldu; kullanılan talimat: [`ai-studio-prompt.md`](./ai-studio-prompt.md))*
 - **3. Cypress 60 sn Demo Video Linki:** [`cypress/videos/se-primer.cy.js.mp4`](./cypress/videos/se-primer.cy.js.mp4)
 
 ---
@@ -50,7 +50,7 @@ Tarayıcıda veya mobil görünümde `http://localhost:3000` adresini açarak oy
 ```bash
 npm run eval
 ```
-Bu komut 20 öğrenci cevabını Sokratik AI Tutor üzerinden geçirir ve [`eval/tutor_eval_20_cases.json`](./eval/tutor_eval_20_cases.json) ile [`eval/tutor_eval_20_cases.csv`](./eval/tutor_eval_20_cases.csv) dosyalarını günceller.
+Bu komut, AI Studio'daki tutordan alınıp elle etiketlenen [`eval/etiketleme.csv`](./eval/etiketleme.csv) dosyasını okur ve oran + örnek sayısı + hata türü tablolarını [`eval/SONUC.md`](./eval/SONUC.md) dosyasına yazar.
 
 ### 3. Cypress E2E Testlerini ve Video Kaydını Çalıştırma
 ```bash
