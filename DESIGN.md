@@ -47,6 +47,17 @@ Neal Stephenson'ın *The Diamond Age* eserindeki etkileşimli "Primer" kitabınd
 
 Aşağıdaki ekran tarifleri, Stitch'e verilen tasarım hedefini (spec ile uyumlu hâli) anlatır:
 
+> [!NOTE]
+> **Stitch taslağı → uygulama uyarlaması.** Stitch ekranları görsel dil (renk, tipografi, kart yapısı, log terminali, Sokratik Tutor kartı) için taslak olarak kullanıldı. İçerik [`spec.md`](./spec.md) ile uyumlu olacak şekilde uygulamada şu farklarla uyarlandı:
+>
+> | Stitch taslağında | Uygulamada (spec'e göre) | Neden |
+> | :--- | :--- | :--- |
+> | Seviye: Junior / Senior (SRE) | Yeni başladım / Deneyimliyim | Spec'teki kişiselleştirme davranışı (ipucu kartı vs. 60 sn sayaç) bu iki seviyeye bağlı |
+> | Tek sabit rol ve hedef kartı | 3 rol + 3 hedef seçeneği | Girişte 3 kişiselleştirme sorusu zorunlu |
+> | Karar ekranında tek karar (1/1) | 3 karar: Mimari, Test, KVKK | Senaryo 3 karar ve 2 son üzerine kurulu |
+> | Alt menüde Profil / Senaryolar sekmeleri | Kaldırıldı | Kullanıcı hesabı ve ikinci senaryo kapsam dışı |
+> | Sonuçta 92/100 puan ve "%68'i B seçti" istatistiği | SON A · İYİ / SON B · KÖTÜ + 3 kararın özeti | Puanlama ve topluluk verisi kapsam dışı; istatistik gerçek veriye dayanmıyor |
+
 ### Ekran 1: Giriş ve Kişiselleştirme Ekranı (`1-giris-ekrani.png`)
 - **Amaç:** Oyuncuyu karşılamak ve anlatıyı şekillendirecek **3 kişiselleştirme sorusunu** almak.
 - **Bileşenler:**
