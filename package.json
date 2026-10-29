@@ -8,7 +8,8 @@
     "eval": "node eval/run_eval.js",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "test": "node run-e2e.js"
+    "test": "node run-e2e.js",
+    "stitch:capture": "node stitch-capture.js"
   },
   "devDependencies": {
     "cypress": "15.21.1"

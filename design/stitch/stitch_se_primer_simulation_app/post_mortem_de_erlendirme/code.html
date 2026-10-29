@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "error": "#ffb4ab", "secondary-fixed-dim": "#d0bcff", "surface-bright": "#353942", "surface-container-high": "#262a33", "primary-fixed": "#acedff", "background": "#0f131c", "surface-variant": "#31353e", "on-secondary-fixed-variant": "#5516be", "surface-tint": "#4cd7f6", "primary": "#4cd7f6", "on-secondary": "#3c0091", "on-background": "#dfe2ee", "tertiary-fixed": "#6ffbbe", "on-surface-variant": "#bcc9cd", "on-primary-container": "#00424f", "surface-container-highest": "#31353e", "surface-container-low": "#181c24", "on-tertiary-fixed": "#002113", "primary-fixed-dim": "#4cd7f6", "outline": "#869397", "secondary": "#d0bcff", "on-surface": "#dfe2ee", "on-secondary-fixed": "#23005c", "on-primary": "#003640", "tertiary-container": "#1bbd85", "error-container": "#93000a", "tertiary-fixed-dim": "#4edea3", "surface": "#0f131c", "on-tertiary-fixed-variant": "#005236", "on-tertiary": "#003824", "on-primary-fixed-variant": "#004e5c", "secondary-fixed": "#e9ddff", "on-primary-fixed": "#001f26", "on-error-container": "#ffdad6", "surface-dim": "#0f131c", "on-tertiary-container": "#00452e", "on-secondary-container": "#c4abff", "inverse-primary": "#00687a", "tertiary": "#4edea3", "primary-container": "#06b6d4", "outline-variant": "#3d494c", "secondary-container": "#571bc1", "inverse-on-surface": "#2c3039", "surface-container": "#1c2028", "surface-container-lowest": "#0a0e16", "on-error": "#690005", "inverse-surface": "#dfe2ee" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "margin-desktop": "2rem", "margin-tablet": "1.5rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter-desktop": "1.5rem", "gutter": "1rem", "space-xl": "2rem", "space-lg": "1.5rem", "gutter-tablet": "1.25rem", "margin": "1rem", "space-md": "1rem" }, "fontFamily": { "headline-xl": ["Inter"], "label-md": ["JetBrains Mono"], "headline-xl-mobile": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "headline-sm": ["Inter"], "label-sm": ["JetBrains Mono"], "body-sm": ["JetBrains Mono"], "body-md": ["JetBrains Mono"], "body-lg": ["JetBrains Mono"], "label-lg": ["JetBrains Mono"], "headline-lg-mobile": ["Inter"] }, "fontSize": { "headline-xl": ["40px", { "lineHeight": "48px", "fontWeight": "800" }], "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "headline-xl-mobile": ["30px", { "lineHeight": "38px", "fontWeight": "800" }], "headline-lg": ["32px", { "lineHeight": "40px", "fontWeight": "700" }], "headline-md": ["22px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }], "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "600" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "label-lg": ["14px", { "lineHeight": "18px", "fontWeight": "600" }], "headline-lg-mobile": ["24px", { "lineHeight": "32px", "fontWeight": "700" }] } } } }</script></head><body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.3)]"><div class="h-16 px-margin flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-xs min-w-0"><button class="flex items-center justify-center min-w-[44px] min-h-[44px] text-on-surface hover:text-primary transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[20px]">arrow_back</span></button><img alt="SE Primer Incident Emblem" class="h-8 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1WU_oA04xbB5VmjB-j_xGkcbmCh65PMoM8S09o65Zx7-Px8feDn0ECAaZsSS-g1c1fnDZagPv4s_v0cRMN0wpZxpVDDZNj1QmGza_vkNDPM_3s7jQ6dqSOj2xKNBNA9KO7cIvA3PntZXTpol6VaeWzb3pWL4cK3YgVZ1_0RTKMRAu3tnrE-x_MCI0cCtS9Odfz4bPabWN0emh-elxv8eSTSFhu4Eku2FAdhgwYTRpmG"/><div class="flex flex-col min-w-0 pl-space-xs"><span class="font-headline-sm text-headline-sm tracking-tight text-on-surface truncate">SE Primer</span><span class="font-label-sm text-label-sm text-primary truncate">Post Mortem Detail</span></div></div><div class="flex items-center gap-space-sm shrink-0"><div class="inline-flex items-center gap-space-xs px-space-sm py-0.5 rounded-full bg-surface-container-high"><span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span><span class="font-label-sm text-label-sm text-tertiary tracking-wider uppercase">STATUS: ON-CALL</span></div><div class="flex items-center justify-center p-0.5 rounded-full min-w-[44px] min-h-[44px]"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbYu5D7shf9H2hHUHRVHgras3h_0B-iTBevMXaJV3WV9MgIUJat0VbovX-l8KlP4f5rLe9XrVIW_y7xYhwbCD9I7XMBTIUzXNPbd8A7jZjoMNKhil9ipq-8UJZzUl4mvqR0YjtYDGRCgsc4ujgqmMjzHlz_8Nlfev6LW5614YVd_b41qiCN7mtmfX5bj8WmCnRL8k3FQiLi9vvsxFMyVyB6cBZQf-_-tyY0TCgHXs"/></div></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 bg-background pb-safe"><div class="flex flex-col w-full pb-10">
+<!-- Interactive Ambient Confetti Canvas -->
+<canvas class="fixed inset-0 pointer-events-none z-40 w-full h-full" id="triumph-canvas"></canvas>
+<!-- Outcome Banner -->
+<section class="relative px-margin pt-space-lg pb-space-xl overflow-hidden bg-surface-container-low shadow-md">
+<!-- Cybernetic Ambient Radial Glow -->
+<div class="absolute -top-16 -right-16 w-64 h-64 rounded-full bg-tertiary/10 blur-3xl pointer-events-none"></div>
+<div class="absolute top-1/2 -left-20 w-48 h-48 rounded-full bg-primary/10 blur-2xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-space-sm">
+<!-- Badge & Score Tracker -->
+<div class="flex items-center justify-between gap-space-xs flex-wrap">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-container/20 text-tertiary">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-sm text-label-sm tracking-wide uppercase">BAŞARILI KRİZ ÇÖZÜMÜ (SEV-0 MITIGATED)</span>
+</div>
+<div class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-high text-primary">
+<span class="material-symbols-outlined text-[14px]">military_tech</span>
+<span class="font-label-sm text-label-sm">92/100 · STAFF ENG</span>
+</div>
+</div>
+<!-- Main Headline & Subtitle -->
+<div class="flex flex-col gap-1 mt-1">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile tracking-tight text-on-surface font-extrabold">
+          Son A: Sistem Ayakta, Veri Güvende
+        </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Eski sürüme kontrollü geri dönüldü ve şema kilidi veri kaybı yaşanmadan çözüldü.
+        </p>
+</div>
+<!-- Hero Visual Metric Spotlight -->
+<div class="mt-space-sm p-space-md rounded-xl bg-surface-container flex items-center justify-between gap-space-md shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Kriz Skoru Seviyesi</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-lg-mobile text-headline-lg-mobile font-black text-tertiary">92</span>
+<span class="font-label-md text-label-md text-on-surface-variant">/ 100</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary font-semibold mt-0.5">Staff Engineer Seviyesi</span>
+</div>
+<!-- Inline Visual Mini Gauge SVG -->
+<div class="relative w-16 h-16 shrink-0 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 48 48">
+<circle class="text-surface-bright" cx="24" cy="24" fill="none" r="19" stroke="currentColor" stroke-width="4.5"></circle>
+<circle class="text-tertiary transition-all duration-1000 ease-out" cx="24" cy="24" fill="none" r="19" stroke="currentColor" stroke-dasharray="119.38" stroke-dashoffset="9.55" stroke-linecap="round" stroke-width="4.5"></circle>
+</svg>
+<span class="material-symbols-outlined absolute text-tertiary text-[22px]">verified</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Incident Telemetry Grid (4 Cards) -->
+<section class="px-margin -mt-space-md flex flex-col gap-space-sm z-20">
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Metric 1: MTTR -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-primary mb-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">MTTR Süresi</span>
+<span class="material-symbols-outlined text-[18px]">timer</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">6 dk 42 sn</div>
+<p class="font-label-sm text-label-sm text-tertiary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> Hedef &lt; 15 dk
+          </p>
+</div>
+</div>
+<!-- Metric 2: Veri Kaybı -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-tertiary mb-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Veri Kaybı</span>
+<span class="material-symbols-outlined text-[18px]">format_image_left</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">0 Kayıt</div>
+<p class="font-label-sm text-label-sm text-tertiary mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">done_all</span> %100 Korundu
+          </p>
+</div>
+</div>
+<!-- Metric 3: Maksimum Hasta Gecikmesi -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-secondary mb-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Max Gecikme</span>
+<span class="material-symbols-outlined text-[18px]">hourglass_top</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">8.5 dakika</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">
+            SLA Eşiğinde Tutuldu
+          </p>
+</div>
+</div>
+<!-- Metric 4: Kurtarma Hızı -->
+<div class="p-space-md rounded-xl bg-surface-container flex flex-col justify-between shadow-sm">
+<div class="flex items-center justify-between text-primary mb-2">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">Kurtarma</span>
+<span class="material-symbols-outlined text-[18px]">speed</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm font-bold text-on-surface">%99.4</div>
+<p class="font-label-sm text-label-sm text-primary mt-1">
+            Trafik Normalleşti
+          </p>
+</div>
+</div>
+</div>
+<!-- Community Comparative Insight Card -->
+<div class="p-space-md rounded-xl bg-surface-container-high flex items-start gap-space-sm shadow-sm">
+<div class="p-2 rounded-lg bg-error-container/20 text-error shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[20px]">warning</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm font-semibold uppercase tracking-wider text-error">Simülasyon Karşılaştırması</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+          Topluluğun <strong class="text-on-surface font-semibold">%68'i</strong> bu krizde B seçeneğini seçerek telafisi zor veri kaybı yaşadı.
+        </p>
+</div>
+</div>
+</section>
+<!-- Incident Timeline Breakdown -->
+<section class="px-margin mt-space-lg">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">timeline</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Kriz Müdahale Zaman Çizelgesi</h2>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">4 Olay Kaydı</span>
+</div>
+<div class="p-space-md rounded-xl bg-surface-container-low shadow-sm flex flex-col gap-space-md">
+<!-- Step 1 -->
+<div class="flex items-start gap-space-sm relative">
+<div class="flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-error-container/30 text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px]">crisis_alert</span>
+</div>
+<div class="w-0.5 h-full bg-surface-bright my-1"></div>
+</div>
+<div class="flex flex-col pb-2 min-w-0">
+<span class="font-label-sm text-label-sm text-error font-semibold">08:00</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Randevu API Çöküşü Tetiklendi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Bağlantı havuzunda ani doygunluk tespit edildi.</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-space-sm relative">
+<div class="flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-secondary-container/40 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px]">psychology</span>
+</div>
+<div class="w-0.5 h-full bg-surface-bright my-1"></div>
+</div>
+<div class="flex flex-col pb-2 min-w-0">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">08:02</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">AI Tutor ile Sokratik Şema Kontrolü</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Doğrudan rollback yerine şema kilit mekanizması incelendi.</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="flex items-start gap-space-sm relative">
+<div class="flex flex-col items-center">
+<div class="w-7 h-7 rounded-full bg-primary-container/30 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px]">terminal</span>
+</div>
+<div class="w-0.5 h-full bg-surface-bright my-1"></div>
+</div>
+<div class="flex flex-col pb-2 min-w-0">
+<span class="font-label-sm text-label-sm text-primary font-semibold">08:04</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Rollback Scripti Dry-run Çalıştırıldı</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Kayıp riski sıfırlandı, geri uyumluluk teyit edildi.</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-space-sm">
+<div class="w-7 h-7 rounded-full bg-tertiary-container/30 text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[15px]">check</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-label-sm text-tertiary font-semibold">08:06</span>
+<span class="font-body-md text-body-md text-on-surface font-medium">Sistem Trafiği v2.3.9'a Yönlendirildi</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Sağlık kontrolleri onaylandı; gecikmeler normalize oldu.</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Key Software Engineering Takeaways -->
+<section class="px-margin mt-space-lg">
+<div class="flex items-center gap-2 mb-space-sm">
+<span class="material-symbols-outlined text-tertiary text-[20px]">lightbulb</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Önemli Mimari Çıkarımlar</h2>
+</div>
+<div class="flex flex-col gap-space-sm">
+<!-- Lesson 1 -->
+<div class="p-space-md rounded-xl bg-surface-container shadow-sm flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]">alt_route</span>
+<span class="font-label-lg text-label-lg">Backward Compatibility</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          DB şeması migrationları her zaman eski kodla 1 sürüm geriye uyumlu (<strong class="text-on-surface">expand-contract pattern</strong>) tasarlanmalıdır.
+        </p>
+</div>
+<!-- Lesson 2 -->
+<div class="p-space-md rounded-xl bg-surface-container shadow-sm flex flex-col gap-1">
+<div class="flex items-center gap-2 text-primary font-semibold">
+<span class="material-symbols-outlined text-[18px]">hub</span>
+<span class="font-label-lg text-label-lg">Connection Pooling</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          Ani trafik dalgalanmalarında DB kilitlerini önlemek için <strong class="text-on-surface">rate limiting</strong> ve pool boyutu dinamik izleme zorunludur.
+        </p>
+</div>
+<!-- Lesson 3 -->
+<div class="p-space-md rounded-xl bg-surface-container shadow-sm flex flex-col gap-1">
+<div class="flex items-center gap-2 text-secondary font-semibold">
+<span class="material-symbols-outlined text-[18px]">psychology_alt</span>
+<span class="font-label-lg text-label-lg">Kriz Anında Sokratik Düşünce</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          En hızlı çözüm (hemen körü körüne rollback) her zaman en güvenli çözüm olmayabilir; <strong class="text-on-surface">şema teyidi felaketi önler</strong>.
+        </p>
+</div>
+</div>
+</section>
+<!-- Interactive Action CTA Buttons -->
+<section class="px-margin mt-space-xl flex flex-col gap-space-sm">
+<!-- Primary CTA: Restart / Next Sim -->
+<button class="w-full py-3.5 px-space-md rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-lg active:scale-[0.98] transition-transform" id="next-sim-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">play_arrow</span>
+<span>Yeni Simülasyona Başla</span>
+</button>
+<!-- Secondary CTA: Post-Mortem Export -->
+<button class="w-full py-3.5 px-space-md rounded-xl bg-surface-container-high text-on-surface hover:text-primary font-label-lg text-label-lg flex items-center justify-center gap-2 shadow-sm active:scale-[0.98] transition-transform" id="download-report-btn" type="button">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Post-Mortem Raporunu İndir (.MD)</span>
+</button>
+</section>
+<!-- Delightful Notification Toast (Hidden by default) -->
+<div class="fixed bottom-6 left-4 right-4 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none flex justify-center" id="toast-feedback">
+<div class="px-4 py-2.5 rounded-full bg-surface-bright text-on-surface font-body-sm text-body-sm shadow-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">verified</span>
+<span id="toast-message">Rapor indirildi!</span>
+</div>
+</div>
+</div>
+<script>
+  (function initPostMortemInteractions() {
+    // Canvas Micro Confetti / Sparkle Effect on Load
+    const canvas = document.getElementById('triumph-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let width = (canvas.width = window.innerWidth);
+      let height = (canvas.height = window.innerHeight);
+
+      const colors = ['#4cd7f6', '#4edea3', '#d0bcff', '#6ffbbe'];
+      const particles = Array.from({ length: 42 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height * 0.4,
+        size: Math.random() * 4 + 2,
+        speedX: (Math.random() - 0.5) * 1.5,
+        speedY: Math.random() * 1.8 + 0.8,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        opacity: Math.random() * 0.8 + 0.2,
+      }));
+
+      let animationFrame;
+      let frameCount = 0;
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach((p) => {
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.opacity;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+
+          p.x += p.speedX;
+          p.y += p.speedY;
+          p.opacity -= 0.003;
+        });
+
+        frameCount++;
+        if (frameCount < 160) {
+          animationFrame = requestAnimationFrame(render);
+        } else {
+          ctx.clearRect(0, 0, width, height);
+        }
+      }
+      render();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+    }
+
+    // Toast Trigger helper
+    const toast = document.getElementById('toast-feedback');
+    const toastMsg = document.getElementById('toast-message');
+    function showToast(text) {
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = text;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 2600);
+    }
+
+    // Markdown Downloader interaction
+    const downloadBtn = document.getElementById('download-report-btn');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', () => {
+        const markdownContent = `# Post-Mortem Incident Report: SEV-0
+Status: MITIGATED
+Sonuç: Son A - Sistem Ayakta, Veri Güvende
+Skor: 92/100 (Staff Engineer Seviyesi)
+
+## Temel Metrikler
+- MTTR: 6 dk 42 sn
+- Veri Kaybı: 0 Kayıt (%100 Korundu)
+- Max Gecikme: 8.5 dk
+- Kurtarma Oranı: %99.4
+
+## Çıkarımlar
+1. DB şeması migrationları her zaman geriye uyumlu (expand-contract) olmalıdır.
+2. Connection pool doygunluğu için rate-limiting gereklidir.
+3. Kriz anında Sokratik kontrol felaketi önler.`;
+
+        const blob = new Blob([markdownContent], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Incident-Report-SEV0.md';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('Post-Mortem Markdown raporu indirildi.');
+      });
+    }
+
+    // Next Sim Button
+    const nextBtn = document.getElementById('next-sim-btn');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        showToast('Yeni simülasyon başlatılıyor...');
+        setTimeout(() => {
+          if (window.history.length > 1) {
+            window.history.back();
+          }
+        }, 1200);
+      });
+    }
+  })();
+</script></main></body></html>

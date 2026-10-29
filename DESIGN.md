@@ -34,7 +34,18 @@ Neal Stephenson'ın *The Diamond Age* eserindeki etkileşimli "Primer" kitabınd
 
 ## 3. Google Stitch İle Tasarlanan 3 Mobil Ekran
 
-Aşağıdaki 3 ana mobil ekran Google Stitch tasarım spesifikasyonuna göre modellenmiş ve ekran görüntüleri [`design/screens/`](./design/screens/) klasörüne kaydedilmiştir:
+3 mobil ekran Google Stitch'te üretildi ve **Export → .zip** ile dışa aktarıldı. Ham çıktı [`design/stitch/`](./design/stitch/) klasöründedir:
+
+| Ekran | Stitch klasörü (`code.html`) | PNG (390 px mobil, tam sayfa) |
+| :--- | :--- | :--- |
+| 1 · Giriş | `se_primer_kriz_sim_lasyonu/` | [`1-giris-ekrani.png`](./design/screens/1-giris-ekrani.png) |
+| 2 · Sahne & Karar | `kriz_karar_konsolu/` | [`2-sahne-karar-ekrani.png`](./design/screens/2-sahne-karar-ekrani.png) |
+| 3 · Sonuç | `post_mortem_de_erlendirme/` | [`3-sonuc-ekrani.png`](./design/screens/3-sonuc-ekrani.png) |
+
+- **Stitch'in kendi tasarım sistemi:** [`design/stitch/.../crisis_ops_command/DESIGN.md`](./design/stitch/stitch_se_primer_simulation_app/crisis_ops_command/DESIGN.md) ("Crisis Ops Command" renk ve tipografi tokenları).
+- **PNG nasıl üretildi?** Stitch zip'indeki `screen.png` dosyaları boş geldi (28 bayt). Bu yüzden PNG'ler, Stitch'in `code.html` çıktıları Cypress ile 390 px genişlikte açılarak alındı (`npm run stitch:capture`).
+
+Aşağıdaki ekran tarifleri, Stitch'e verilen tasarım hedefini (spec ile uyumlu hâli) anlatır:
 
 ### Ekran 1: Giriş ve Kişiselleştirme Ekranı (`1-giris-ekrani.png`)
 - **Amaç:** Oyuncuyu karşılamak ve anlatıyı şekillendirecek **3 kişiselleştirme sorusunu** almak.
