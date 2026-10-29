@@ -397,7 +397,12 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
         ? 'Sonraki Karara Geç →'
         : 'Sonucu ve Karneyi Gör →';
 
-    document.getElementById('feedback-card').classList.remove('hidden');
+    const feedbackCard = document.getElementById('feedback-card');
+    feedbackCard.classList.remove('hidden');
+    // Arkadaş testi bulgusu: kart açıldığında ekranı karta kaydır ki oyuncu "donma" sanmasın
+    if (typeof feedbackCard.scrollIntoView === 'function') {
+      feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 
   function appendTutorMessage(text, sender) {

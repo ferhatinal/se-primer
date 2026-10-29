@@ -126,9 +126,12 @@ flowchart TD
 - **Eylem (When):** Oyuncu AI Tutor'a `"A mı seçmeliyim B mi? Doğrudan cevabı söyle, vaktim yok!"` mesajını gönderir.
 - **Beklenen Sonuç (Then):** AI Tutor yanıtında `"A şıkkını seç"` veya `"B şıkkı doğrudur"` gibi doğrudan bir cevap **kesinlikle yer almaz**; bunun yerine oyuncuyu düşünmeye sevk eden Sokratik bir soru sorar (ör. *"Geri dönmeden önce veritabanı şemasının değişip değişmediğini nasıl anlarsın?"*).
 
-### Kabul Örneği 5: Arkadaş Testinden Çıkan Görünmez Varsayım — "Ne Oldu / Neden Oldu" Okunmadan Ekranın Atlanmaması
-> **Arkadaş testi — YAPILACAK:** Uygulamayı bir arkadaşına oynat ve neyi yanlış anladığını/nerede takıldığını not al. Aşağıdaki kriter, böyle bir testte çıkması beklenen bir varsayım örneğidir; testi yaptıktan sonra bu kutuyu arkadaşının gerçek gözlemiyle değiştir (veya bu örnek gerçekten yaşandıysa öyle yaz).
+### Kabul Örneği 5: Arkadaş Testinden Çıkan Görünmez Varsayım — Seçimden Sonra Ekranın "Donmuş" Görünmemesi
+> **Arkadaş testinden çıkan görünmez varsayım:** Arkadaşım uygulamayı telefonda denedi. 1. kararda seçim yaptıktan sonra butonların kilitlenip "Ne Oldu?" kartının açılmasını başta bir gecikme/donma sandı. Sonra alttaki **"Sonraki Karara Geç"** butonunu fark edip ilerledi. Benim görünmez varsayımım şuydu: "Oyuncu, seçimden sonra ekranın beklediğini ve aşağıda bir ilerleme butonu olduğunu kendiliğinden anlar." Bu varsayım aşağıdaki kabul kriterine dönüştürüldü.
 
 - **Önkoşul (Given):** Oyuncu herhangi bir karar aşamasındadır (`Karar 1`, `Karar 2` veya `Karar 3`).
 - **Eylem (When):** Oyuncu `A` veya `B` butonuna tıklar.
-- **Beklenen Sonuç (Then):** Uygulama anında bir sonraki karara **atlamaz**; önce aynı sahnede **"Ne Oldu?"** ve **"Neden Oldu?"** teknik analiz kartını açar, seçilen şıkkı kilitler ve oyuncunun açıklamayı okuduktan sonra bilinçli olarak basacağı **"Sonraki Karara Geç"** (veya **"Sonucu Gör"**) butonunu aktif hale getirir.
+- **Beklenen Sonuç (Then):**
+  1. Uygulama bir sonraki karara **otomatik atlamaz**. Seçilen şık vurgulanır, diğer şık kilitlenir.
+  2. "Ne Oldu?" ve "Neden Oldu?" kartı açılır ve ekran **otomatik olarak bu karta kaydırılır**. Böylece oyuncu, telefonda ekranın alt kısmında olan bir şeyi kaçırıp "ekran dondu" diye düşünmez.
+  3. **"Sonraki Karara Geç"** (son kararda **"Sonucu Gör"**) butonu kartın içinde, kaydırmadan görünür durumdadır.
