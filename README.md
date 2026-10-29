@@ -31,9 +31,9 @@
 
 ## 🔗 Üç Teslim Linki
 
-- **1. GitHub Repo Linki:** `[GitHub Repo URL'nizi buraya ekleyin]`
+- **1. GitHub Repo Linki:** https://github.com/ferhatinal/se-primer
 - **2. Google AI Studio Uygulama Linki:** https://ai.studio/apps/9872d2c1-2731-44e6-ad04-04d394d1843a *(Stitch → Export → AI Studio ile oluşturuldu; kullanılan talimat: [`ai-studio-prompt.md`](./ai-studio-prompt.md))*
-- **3. Cypress 60 sn Demo Video Linki:** [`cypress/videos/se-primer.cy.js.mp4`](./cypress/videos/se-primer.cy.js.mp4)
+- **3. Cypress 60 sn Demo Video Linki:** [`cypress/videos/se-primer.cy.js.mp4`](https://github.com/ferhatinal/se-primer/blob/main/cypress/videos/se-primer.cy.js.mp4) *(Repo içi konum: [`./cypress/videos/se-primer.cy.js.mp4`](./cypress/videos/se-primer.cy.js.mp4))*
 
 ---
 
