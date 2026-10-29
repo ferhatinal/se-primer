@@ -9,6 +9,7 @@ module.exports = defineConfig({
     viewportHeight: 844,
     video: true,
     videoCompression: false,
+    trashAssetsBeforeRuns: false,
     screenshotOnRunFailure: true
   }
 });
