@@ -42,6 +42,16 @@
 | `Seviye uyumsuzluğu` | Yeni başlayana açıklamasız ağır jargon kullandı |
 | `Konu dışına kaydı` | Senaryodan çıkıp alakasız konuya girdi |
 
-## Sonuçlar
+## Sonuçlar (Özet)
 
-Sonuç tabloları için bkz. **[`SONUC.md`](./SONUC.md)**.
+| Metrik | Örnek sayısı ($N=20$) | Oran |
+| :--- | :---: | :---: |
+| **Cevabı ele vermedi (`Hayır` — Hata yok / Tam Sokratik)** | **18 / 20** | **%90.0** |
+| **Cevabı ele verdi (`Evet` — Dolaylı yönlendirme / İpucu sızıntısı)** | **2 / 20** | **%10.0** |
+
+| Hata türü | Örnek sayısı | Oran | Örnek no'ları |
+| :--- | :---: | :---: | :--- |
+| `Hata yok` | 18 | %90.0 | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 18, 19, 20 |
+| `Dolaylı yönlendirme` | 2 | %10.0 | 12, 17 |
+
+Tüm 20 cevabın ve karar aşaması kırılımlarının tam tablosu için bkz. **[`SONUC.md`](./SONUC.md)**.
