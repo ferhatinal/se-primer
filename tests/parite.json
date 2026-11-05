@@ -1,0 +1,137 @@
+{
+  "model_adi": "se-primer-risk-radari",
+  "versiyon": "2.0.0",
+  "tolerans": 0.0001,
+  "karar_esigi": 0.5,
+  "ozellik_sirasi": [
+    "seviye",
+    "sahne_no",
+    "onceki_karar_suresi_sn",
+    "onceki_okuma_suresi_sn",
+    "onceki_riskli_sayisi",
+    "tutor_soru_sayisi",
+    "cevap_isteme_sayisi"
+  ],
+  "vakalar": [
+    {
+      "id": "vaka_1_dikkatli_yeni_sahne2",
+      "aciklama": "Yeni başlayan dikkatli oyuncu: 1. kararda 16 sn düşündü, 10 sn okudu, A seçti ve tutorla konuştu.",
+      "girdi": {
+        "seviye": 0,
+        "sahne_no": 2,
+        "onceki_karar_suresi_sn": 16.0,
+        "onceki_okuma_suresi_sn": 10.0,
+        "onceki_riskli_sayisi": 0,
+        "tutor_soru_sayisi": 1,
+        "cevap_isteme_sayisi": 0
+      },
+      "vektor": [
+        0.0,
+        2.0,
+        16.0,
+        10.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "p_riskli_oracle": 0.267585,
+      "mudahale_beklenir": false
+    },
+    {
+      "id": "vaka_2_dikkatli_deneyimli_sahne3",
+      "aciklama": "Deneyimli soğukkanlı oyuncu: İlk iki kararda güvenli (A) gitti, açıklamaları 11 sn okudu, kopya istemedi.",
+      "girdi": {
+        "seviye": 1,
+        "sahne_no": 3,
+        "onceki_karar_suresi_sn": 18.5,
+        "onceki_okuma_suresi_sn": 11.0,
+        "onceki_riskli_sayisi": 0,
+        "tutor_soru_sayisi": 1,
+        "cevap_isteme_sayisi": 0
+      },
+      "vektor": [
+        1.0,
+        3.0,
+        18.5,
+        11.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "p_riskli_oracle": 0.198305,
+      "mudahale_beklenir": false
+    },
+    {
+      "id": "vaka_3_sinirda_kararsiz_sahne2",
+      "aciklama": "Orta hızda ilerleyen, henüz riskli seçim yapmamış ancak tutora hiç soru sormamış yeni oyuncu.",
+      "girdi": {
+        "seviye": 0,
+        "sahne_no": 2,
+        "onceki_karar_suresi_sn": 7.5,
+        "onceki_okuma_suresi_sn": 4.5,
+        "onceki_riskli_sayisi": 0,
+        "tutor_soru_sayisi": 0,
+        "cevap_isteme_sayisi": 0
+      },
+      "vektor": [
+        0.0,
+        2.0,
+        7.5,
+        4.5,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "p_riskli_oracle": 0.429382,
+      "mudahale_beklenir": false
+    },
+    {
+      "id": "vaka_4_kopya_isteyen_sahne2",
+      "aciklama": "1. kararda hızlıca B seçip açıklamayı 2 sn'de geçen ve tutordan doğrudan şık isteyen oyuncu.",
+      "girdi": {
+        "seviye": 0,
+        "sahne_no": 2,
+        "onceki_karar_suresi_sn": 4.0,
+        "onceki_okuma_suresi_sn": 2.0,
+        "onceki_riskli_sayisi": 1,
+        "tutor_soru_sayisi": 1,
+        "cevap_isteme_sayisi": 1
+      },
+      "vektor": [
+        0.0,
+        2.0,
+        4.0,
+        2.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "p_riskli_oracle": 0.774573,
+      "mudahale_beklenir": true
+    },
+    {
+      "id": "vaka_5_yuksek_riskli_aceleci_sahne3",
+      "aciklama": "Deneyimli modda panikleyen oyuncu: İlk 2 kararda B seçti, 1.5 sn okudu ve 2 kez cevabı doğrudan istedi.",
+      "girdi": {
+        "seviye": 1,
+        "sahne_no": 3,
+        "onceki_karar_suresi_sn": 3.0,
+        "onceki_okuma_suresi_sn": 1.5,
+        "onceki_riskli_sayisi": 2,
+        "tutor_soru_sayisi": 0,
+        "cevap_isteme_sayisi": 2
+      },
+      "vektor": [
+        1.0,
+        3.0,
+        3.0,
+        1.5,
+        2.0,
+        0.0,
+        2.0
+      ],
+      "p_riskli_oracle": 0.960792,
+      "mudahale_beklenir": true
+    }
+  ]
+}

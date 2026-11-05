@@ -557,3 +557,68 @@ body {
   color: var(--accent-amber);
   margin-bottom: 4px;
 }
+
+
+/* v2.0 — ONNX Risk Radarı ve Davranışsal Uyum Bileşenleri */
+.risk-radar-card {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1.5px solid rgba(16, 185, 129, 0.45);
+  border-radius: var(--radius-md);
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.risk-radar-card.risk-high {
+  background: rgba(127, 29, 29, 0.28);
+  border-color: #f87171;
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.25);
+}
+
+.risk-radar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.risk-radar-title {
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.risk-radar-card.risk-high .risk-radar-title {
+  color: #fca5a5;
+}
+
+.risk-prob-pill {
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 0.78rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: #f8fafc;
+}
+
+.risk-intervention-banner {
+  font-size: 0.79rem;
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.18);
+  border-left: 3px solid #ef4444;
+  padding: 7px 10px;
+  border-radius: 6px;
+}
+
+.adaptive-depth-box {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: var(--radius-sm);
+  padding: 9px 11px;
+  font-size: 0.79rem;
+  color: #e0f2fe;
+}

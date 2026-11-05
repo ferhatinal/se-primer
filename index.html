@@ -98,6 +98,17 @@
 
       <div id="profile-summary-bar" class="profile-summary-bar" data-cy="profile-summary-bar"></div>
 
+      <!-- v2.0: ONNX Risk Radarı (Davranıştan Öğrenen Model Çıkarımı) -->
+      <section id="risk-radar-card" class="risk-radar-card" data-cy="risk-radar">
+        <div class="risk-radar-header">
+          <span class="risk-radar-title">
+            🧠 <span id="risk-radar-status" data-cy="risk-radar-status">ONNX Risk Radarı: Dengeli İlerleme</span>
+          </span>
+          <span class="risk-prob-pill">p_riskli = <strong id="model-prob-value" data-cy="p">0.000000</strong></span>
+        </div>
+        <div id="risk-intervention-banner" class="risk-intervention-banner hidden" data-cy="risk-intervention-banner"></div>
+      </section>
+
       <section class="scene-card">
         <h2 id="scene-title" class="scene-title" data-cy="scene-title">KARAR 1 · MİMARİ</h2>
         <p id="scene-narrative" class="scene-narrative" data-cy="scene-narrative"></p>
@@ -108,6 +119,9 @@
           <span class="beginner-hint-title">💡 Başlangıç Rehberi (Seviye: Yeni başladım)</span>
           <span id="beginner-hint-text" data-cy="beginner-hint-text"></span>
         </div>
+
+        <!-- v2.0: Model Müdahalesi ile Derinleşen Teknik Analiz Kutusu -->
+        <div id="adaptive-depth-box" class="adaptive-depth-box hidden" data-cy="adaptive-depth-box"></div>
       </section>
 
       <!-- Karar Butonları (A ve B) -->
@@ -177,12 +191,17 @@
         <div id="ending-timeline" class="timeline-list" data-cy="ending-timeline"></div>
       </section>
 
+      <button type="button" id="btn-export-csv" class="btn-secondary" data-cy="btn-export-csv">
+        📥 Oturum Verisini İndir (oturumlar.csv - KVKK Anonim)
+      </button>
+
       <button type="button" id="btn-restart" class="btn-primary" data-cy="btn-restart">
         Baştan Oyna (Yeni Senaryo Yolu Dene)
       </button>
     </main>
   </div>
 
+  <script src="vendor/ort/ort.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

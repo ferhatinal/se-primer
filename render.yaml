@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: se-primer-risk-radari-api
+    runtime: python
+    buildCommand: pip install numpy onnxruntime
+    startCommand: python api/server_api.py
+    plan: free

@@ -1,0 +1,133 @@
+{
+  "model_adi": "se-primer-risk-radari",
+  "versiyon": "2.0.0",
+  "egitim_tarihi": "2026-11-05",
+  "gorev": "Oyuncunun mevcut kararda riskli seçeneği (B) seçme olasılığını tahmin etmek",
+  "girdi": {
+    "onnx_girdi_adi": "input",
+    "tip": "float32",
+    "boyut": [
+      null,
+      7
+    ],
+    "ozellikler": [
+      "seviye",
+      "sahne_no",
+      "onceki_karar_suresi_sn",
+      "onceki_okuma_suresi_sn",
+      "onceki_riskli_sayisi",
+      "tutor_soru_sayisi",
+      "cevap_isteme_sayisi"
+    ]
+  },
+  "cikti": {
+    "onnx_cikti_adi": "probabilities",
+    "siniflar": [
+      "guvenli",
+      "riskli"
+    ],
+    "kullanilacak_indeks": 1,
+    "aciklama": "probabilities[:, 1] = p_riskli"
+  },
+  "karar_esigi": 0.5,
+  "kabul_esikleri": {
+    "test_auc": 0.7,
+    "test_recall_riskli": 0.6,
+    "onnx_sklearn_max_fark": 0.0001
+  },
+  "metrikler": {
+    "test_auc": 0.7436,
+    "test_recall_riskli": 0.6514,
+    "test_precision_riskli": 0.6698,
+    "test_accuracy": 0.6958,
+    "n_train_satir": 714,
+    "n_test_satir": 240,
+    "test_riskli_orani": 0.4542,
+    "gercek_test_auc": 0.85,
+    "n_gercek_test_satir": 18,
+    "onnx_sklearn_max_fark": 9.802e-08
+  },
+  "veri": {
+    "dosya": "data/oturumlar.csv",
+    "sha256": "b9407f8bebd798bb26bd741923231e4aa6076d307ba23fb6f3253a1514b4f308",
+    "n_satir": 954,
+    "n_oturum": 318,
+    "n_gercek_oturum": 18,
+    "n_sentetik_oturum": 300
+  },
+  "egitim": {
+    "algoritma": "StandardScaler + LogisticRegression(class_weight=balanced)",
+    "random_state": 42,
+    "bolme": "GroupShuffleSplit(test_size=0.25, gruplar=oturum_id)",
+    "katsayilar_olcekli": {
+      "seviye": -0.1045,
+      "sahne_no": -0.0875,
+      "onceki_karar_suresi_sn": -0.2367,
+      "onceki_okuma_suresi_sn": -0.1588,
+      "onceki_riskli_sayisi": 0.6772,
+      "tutor_soru_sayisi": -0.3559,
+      "cevap_isteme_sayisi": 0.5011
+    },
+    "sabit": -0.0105
+  },
+  "surumler": {
+    "python": "3.13.3",
+    "sklearn": "1.8.0",
+    "skl2onnx": "1.20.0",
+    "onnxruntime": "1.31.1",
+    "onnx_opset": 17
+  },
+  "json_semasi": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "RiskRadariIstegi",
+    "type": "object",
+    "required": [
+      "seviye",
+      "sahne_no",
+      "onceki_karar_suresi_sn",
+      "onceki_okuma_suresi_sn",
+      "onceki_riskli_sayisi",
+      "tutor_soru_sayisi",
+      "cevap_isteme_sayisi"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "seviye": {
+        "type": "integer",
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "sahne_no": {
+        "type": "integer",
+        "enum": [
+          1,
+          2,
+          3
+        ]
+      },
+      "onceki_karar_suresi_sn": {
+        "type": "number",
+        "minimum": 0
+      },
+      "onceki_okuma_suresi_sn": {
+        "type": "number",
+        "minimum": 0
+      },
+      "onceki_riskli_sayisi": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 2
+      },
+      "tutor_soru_sayisi": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "cevap_isteme_sayisi": {
+        "type": "integer",
+        "minimum": 0
+      }
+    }
+  }
+}

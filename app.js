@@ -237,21 +237,189 @@ function evaluateGameOutcome(decisions, profile) {
   }
 }
 
-// Tarayıcı Ortamı (DOM Yönetimi)
+// Tarayıcı Ortamı (DOM Yönetimi + v2.0 ONNX Risk Radarı & Veri Toplama Modu)
 if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+  const ADAPTIVE_DEPTH_NOTES = {
+    1: '🔍 Derinleştirilmiş Mimari Rehber (Model Müdahalesi): Geri dönüş (rollback) öncesi `flyway_schema_history` tablosunda yıkıcı (DROP/ALTER) bir değişiklik yoksa `v2.3.9` imajına dönmek en düşük MTTR yoludur.',
+    2: '🔍 Derinleştirilmiş Test Rehberi (Model Müdahalesi): Önceki adımlarda hızlı/riskli ilerledin. 3 dakikalık duman testini (smoke test) atlamak, Redis önbellek serileştirme hatasını doğrudan 12 canlı sunucuya taşır.',
+    3: '🔍 Derinleştirilmiş KVKK Rehberi (Model Müdahalesi): Dikkat! Log satırındaki `hastaAdi: "Mehmet Demir"` ve `tcKimlik` alanları 6698 sayılı KVKK Madde 6 kapsamında özel nitelikli veridir; paylaşmadan önce mutlaka maskelenmelidir.'
+  };
+
+  const PROACTIVE_SOCRATIC_BANNERS = {
+    1: '🚨 Risk Radarı Devrede (p ≥ 0.50): Acele karar eğilimi algılandı. Karar vermeden önce şunu düşün: Canlıda yama yaparken diğer 11 sunucu kopyasıyla senkronizasyonu nasıl koruyacaksın?',
+    2: '🚨 Risk Radarı Devrede (p ≥ 0.50): Süre baskısı kaldırıldı ve derin rehber açıldı! Şunu tart: 3 dakikalık duman testini atlamak 300 hastayı kurtarır mı, yoksa ikinci bir çökmeye mi yol açar?',
+    3: '🚨 Risk Radarı Devrede (p ≥ 0.50): Süre baskısı kaldırıldı! Logdaki `txId: TX-9941` hatayı bulmak için yeterliyken hasta adını açık paylaşmanın hukuki sonucunu düşündün mü?'
+  };
+
+  function randomHex8() {
+    const arr = new Uint8Array(4);
+    if (window.crypto && window.crypto.getRandomValues) {
+      window.crypto.getRandomValues(arr);
+    } else {
+      for (let i = 0; i < 4; i++) arr[i] = Math.floor(Math.random() * 256);
+    }
+    return Array.from(arr, (b) => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function isDirectSpoilerRequest(text) {
+    const t = (text || '').trim().toLowerCase();
+    return (
+      t.includes('hangisi') ||
+      t.includes('a mı b mi') ||
+      t.includes('cevabı söyle') ||
+      t.includes('cevap ne') ||
+      t.includes('ne seçeyim') ||
+      t.includes('hangisini seç') ||
+      t.includes('doğru şık') ||
+      t.includes('kopya') ||
+      t.includes('söyle geç') ||
+      t.includes('ignore previous')
+    );
+  }
+
   const state = {
     profile: {
       level: 'Yeni başladım',
       role: 'Backend Mühendisi',
       goal: 'Sistem Sürekliliği (Uptime)'
     },
+    oturumId: randomHex8(),
     currentStepIndex: 0,
     decisions: {},
     timerInterval: null,
-    remainingSeconds: 60
+    remainingSeconds: 60,
+    // v2.0 Davranışsal Özellik İzleme
+    sceneStartTimeMs: Date.now(),
+    feedbackStartTimeMs: 0,
+    lastDecisionDurationSec: 0,
+    oncekiKararSuresiSn: 0.0,
+    oncekiOkumaSuresiSn: 0.0,
+    oncekiRiskliSayisi: 0,
+    tutorSoruSayisi: 0,
+    cevapIstemeSayisi: 0,
+    lastProb: 0.0,
+    sessionRows: [],
+    allCollectedRows: [],
+    onnxSession: null,
+    modelConfig: null,
+    modelReadyPromise: null
   };
 
+  async function initOnnxModel() {
+    if (state.onnxSession) return state.onnxSession;
+    try {
+      const cfgResp = await fetch('model/config.json');
+      if (cfgResp.ok) {
+        state.modelConfig = await cfgResp.json();
+      }
+      if (typeof window.ort !== 'undefined') {
+        window.ort.env.wasm.wasmPaths = new URL('vendor/ort/', window.location.href).href;
+        window.ort.env.wasm.numThreads = 1;
+        state.onnxSession = await window.ort.InferenceSession.create('model/model.onnx', {
+          executionProviders: ['wasm']
+        });
+      }
+    } catch (err) {
+      console.warn('ONNX model yüklenemedi, v1 kurallarıyla devam ediliyor:', err);
+    }
+    return state.onnxSession;
+  }
+
+  async function runPrimerInference(inputObjOrArray, applyGameAdaptation = true) {
+    await (state.modelReadyPromise || initOnnxModel());
+    const order = (state.modelConfig && state.modelConfig.girdi && state.modelConfig.girdi.ozellikler) || [
+      'seviye',
+      'sahne_no',
+      'onceki_karar_suresi_sn',
+      'onceki_okuma_suresi_sn',
+      'onceki_riskli_sayisi',
+      'tutor_soru_sayisi',
+      'cevap_isteme_sayisi'
+    ];
+    const threshold = (state.modelConfig && state.modelConfig.karar_esigi) || 0.5;
+
+    let vec;
+    if (Array.isArray(inputObjOrArray)) {
+      vec = inputObjOrArray.map((v) => Number(v));
+    } else {
+      vec = order.map((k) => Number(inputObjOrArray[k] || 0));
+    }
+
+    let pRiskli = 0.0;
+    if (state.onnxSession && typeof window.ort !== 'undefined') {
+      const tensor = new window.ort.Tensor('float32', Float32Array.from(vec), [1, 7]);
+      const out = await state.onnxSession.run({ input: tensor });
+      const probs = out.probabilities.data;
+      pRiskli = Number(probs[1]);
+    }
+
+    state.lastProb = pRiskli;
+    const probEl = document.getElementById('model-prob-value');
+    if (probEl) {
+      probEl.textContent = pRiskli.toFixed(6);
+    }
+
+    const mudahale = pRiskli >= threshold;
+    if (applyGameAdaptation) {
+      applyRiskRadarUI(pRiskli, mudahale, vec);
+    }
+
+    return { p_riskli: pRiskli, mudahale, vektor: vec };
+  }
+
+  function applyRiskRadarUI(pRiskli, mudahale, vec) {
+    const radarCard = document.getElementById('risk-radar-card');
+    const statusEl = document.getElementById('risk-radar-status');
+    const bannerEl = document.getElementById('risk-intervention-banner');
+    const depthBox = document.getElementById('adaptive-depth-box');
+    const timerBadge = document.getElementById('timer-badge');
+    if (!radarCard || !statusEl || !bannerEl || !depthBox) return;
+
+    const sahneNo = Math.round(vec[1]) || 1;
+    const hasBehavioralSignal = sahneNo >= 2 || vec[6] >= 1 || vec[4] >= 1;
+
+    if (mudahale && hasBehavioralSignal) {
+      radarCard.classList.add('risk-high');
+      statusEl.textContent = 'ONNX Risk Radarı: Yüksek Risk (Müdahale Aktif)';
+      bannerEl.textContent = PROACTIVE_SOCRATIC_BANNERS[sahneNo] || PROACTIVE_SOCRATIC_BANNERS[1];
+      bannerEl.classList.remove('hidden');
+
+      depthBox.textContent = ADAPTIVE_DEPTH_NOTES[sahneNo] || ADAPTIVE_DEPTH_NOTES[1];
+      depthBox.classList.remove('hidden');
+
+      // "Deneyimliyim" modunda süre baskısını kaldır
+      if (state.profile.level === 'Deneyimliyim' && timerBadge) {
+        stopCountdown();
+        timerBadge.textContent = '⏱ Süre Baskısı Kaldırıldı (Risk Radarı)';
+      }
+    } else {
+      radarCard.classList.remove('risk-high');
+      statusEl.textContent = 'ONNX Risk Radarı: Dengeli İlerleme';
+      bannerEl.classList.add('hidden');
+      depthBox.classList.add('hidden');
+    }
+  }
+
+  function getCurrentFeatureMap() {
+    const step = SCENARIO_STEPS[state.currentStepIndex] || SCENARIO_STEPS[0];
+    return {
+      seviye: state.profile.level === 'Deneyimliyim' ? 1 : 0,
+      sahne_no: step.id,
+      onceki_karar_suresi_sn: Number(state.oncekiKararSuresiSn.toFixed(2)),
+      onceki_okuma_suresi_sn: Number(state.oncekiOkumaSuresiSn.toFixed(2)),
+      onceki_riskli_sayisi: state.oncekiRiskliSayisi,
+      tutor_soru_sayisi: state.tutorSoruSayisi,
+      cevap_isteme_sayisi: state.cevapIstemeSayisi
+    };
+  }
+
+  // Test Kahini (Cypress Diferansiyel Parite Testi) için global erişim
+  window.runPrimerInference = runPrimerInference;
+  window.getPrimerState = () => state;
+
   function initApp() {
+    state.modelReadyPromise = initOnnxModel();
+
     // Kişiselleştirme seçenek butonları
     const optionButtons = document.querySelectorAll('.option-pill');
     optionButtons.forEach((btn) => {
@@ -271,8 +439,15 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     const startBtn = document.getElementById('btn-start-game');
     if (startBtn) {
       startBtn.addEventListener('click', () => {
+        state.oturumId = randomHex8();
         state.currentStepIndex = 0;
         state.decisions = {};
+        state.oncekiKararSuresiSn = 0.0;
+        state.oncekiOkumaSuresiSn = 0.0;
+        state.oncekiRiskliSayisi = 0;
+        state.tutorSoruSayisi = 0;
+        state.cevapIstemeSayisi = 0;
+        state.sessionRows = [];
         document.getElementById('screen-onboarding').classList.add('hidden');
         document.getElementById('screen-ending').classList.add('hidden');
         document.getElementById('screen-scene').classList.remove('hidden');
@@ -286,10 +461,23 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 
     // Sonraki Karara Geç butonu
     document.getElementById('btn-next-step').addEventListener('click', () => {
+      const okumaSn = Math.max(0.1, (Date.now() - state.feedbackStartTimeMs) / 1000);
+      if (state.sessionRows.length > 0) {
+        const lastRow = state.sessionRows[state.sessionRows.length - 1];
+        lastRow.okuma_suresi_sn = Number(okumaSn.toFixed(2));
+      }
+      state.oncekiKararSuresiSn = state.lastDecisionDurationSec;
+      state.oncekiOkumaSuresiSn = okumaSn;
+      const step = SCENARIO_STEPS[state.currentStepIndex];
+      if (state.decisions[step.id] === 'B') {
+        state.oncekiRiskliSayisi += 1;
+      }
+
       if (state.currentStepIndex < SCENARIO_STEPS.length - 1) {
         state.currentStepIndex += 1;
         renderCurrentScene();
       } else {
+        state.allCollectedRows.push(...state.sessionRows);
         renderEndingScreen();
       }
     });
@@ -302,15 +490,30 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
       if (!val) return;
       appendTutorMessage(val, 'user');
       tutorInput.value = '';
+
+      state.tutorSoruSayisi += 1;
+      if (isDirectSpoilerRequest(val)) {
+        state.cevapIstemeSayisi += 1;
+      }
+
       const step = SCENARIO_STEPS[state.currentStepIndex];
       const reply = generateSocraticTutorResponse(val, step.id, state.profile);
       appendTutorMessage(reply, 'tutor');
+
+      // Tutor etkileşimi sonrası ONNX Risk Radarını yeniden çalıştır
+      runPrimerInference(getCurrentFeatureMap(), true);
     };
 
     tutorSendBtn.addEventListener('click', sendTutorQuestion);
     tutorInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') sendTutorQuestion();
     });
+
+    // CSV İndirme (Veri Toplama Modu)
+    const exportBtn = document.getElementById('btn-export-csv');
+    if (exportBtn) {
+      exportBtn.addEventListener('click', exportCollectedCsv);
+    }
 
     // Yeniden Oyna
     document.getElementById('btn-restart').addEventListener('click', () => {
@@ -324,6 +527,9 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
 
   function renderCurrentScene() {
     const step = SCENARIO_STEPS[state.currentStepIndex];
+    state.sceneStartTimeMs = Date.now();
+    state.tutorSoruSayisi = 0;
+
     document.getElementById('header-clock').textContent = step.clock;
     document.getElementById('step-indicator').textContent = step.stepLabel;
     document.getElementById('scene-title').textContent = step.title;
@@ -369,12 +575,44 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     const tutorMessages = document.getElementById('tutor-messages');
     tutorMessages.innerHTML = '';
     appendTutorMessage(step.tutorInitialQuestion, 'tutor');
+
+    // v2.0: Sahne girişinde ONNX Risk Radarı çıkarımını çalıştır
+    runPrimerInference(getCurrentFeatureMap(), true);
   }
 
   function handleDecision(choiceKey) {
     stopCountdown();
     const step = SCENARIO_STEPS[state.currentStepIndex];
     state.decisions[step.id] = choiceKey;
+
+    const kararSn = Math.max(0.1, (Date.now() - state.sceneStartTimeMs) / 1000);
+    state.lastDecisionDurationSec = kararSn;
+    state.feedbackStartTimeMs = Date.now();
+
+    const roleMap = { 'Backend Mühendisi': 0, 'SRE / DevOps': 1, 'Güvenlik / KVKK Uzmanı': 2 };
+    const goalMap = {
+      'Sistem Sürekliliği (Uptime)': 0,
+      'Veri Güvenliği ve KVKK Uyum': 1,
+      'Hızlı Kök Neden Analizi': 2
+    };
+    const fmap = getCurrentFeatureMap();
+    state.sessionRows.push({
+      oturum_id: state.oturumId,
+      kaynak: 'gercek',
+      seviye: fmap.seviye,
+      rol: roleMap[state.profile.role] || 0,
+      hedef: goalMap[state.profile.goal] || 0,
+      sahne_no: step.id,
+      onceki_karar_suresi_sn: fmap.onceki_karar_suresi_sn,
+      onceki_okuma_suresi_sn: fmap.onceki_okuma_suresi_sn,
+      onceki_riskli_sayisi: fmap.onceki_riskli_sayisi,
+      tutor_soru_sayisi: fmap.tutor_soru_sayisi,
+      cevap_isteme_sayisi: fmap.cevap_isteme_sayisi,
+      karar_suresi_sn: Number(kararSn.toFixed(2)),
+      okuma_suresi_sn: 0.0,
+      secim: choiceKey,
+      riskli_secim: choiceKey === 'B' ? 1 : 0
+    });
 
     const btnA = document.getElementById('btn-choice-a');
     const btnB = document.getElementById('btn-choice-b');
@@ -403,6 +641,40 @@ if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (typeof feedbackCard.scrollIntoView === 'function') {
       feedbackCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+  }
+
+  function exportCollectedCsv() {
+    const rows = state.allCollectedRows.length ? state.allCollectedRows : state.sessionRows;
+    if (!rows.length) return;
+    const cols = [
+      'oturum_id',
+      'kaynak',
+      'seviye',
+      'rol',
+      'hedef',
+      'sahne_no',
+      'onceki_karar_suresi_sn',
+      'onceki_okuma_suresi_sn',
+      'onceki_riskli_sayisi',
+      'tutor_soru_sayisi',
+      'cevap_isteme_sayisi',
+      'karar_suresi_sn',
+      'okuma_suresi_sn',
+      'secim',
+      'riskli_secim'
+    ];
+    const lines = [cols.join(',')];
+    rows.forEach((r) => {
+      lines.push(cols.map((c) => r[c]).join(','));
+    });
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `oturumlar_${state.oturumId}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   function appendTutorMessage(text, sender) {
