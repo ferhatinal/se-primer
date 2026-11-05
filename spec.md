@@ -135,3 +135,61 @@ flowchart TD
   1. Uygulama bir sonraki karara **otomatik atlamaz**. Seçilen şık vurgulanır, diğer şık kilitlenir.
   2. "Ne Oldu?" ve "Neden Oldu?" kartı açılır ve ekran **otomatik olarak bu karta kaydırılır**. Böylece oyuncu, telefonda ekranın alt kısmında olan bir şeyi kaçırıp "ekran dondu" diye düşünmez.
   3. **"Sonraki Karara Geç"** (son kararda **"Sonucu Gör"**) butonu kartın içinde, kaydırmadan görünür durumdadır.
+
+
+---
+
+# v2.0 — Davranıştan Öğrenen Uyum: "Risk Radarı" Modeli
+
+> **Bu bölüm eğitimden ÖNCE yazılmış ve commit'lenmiştir.** Kabul eşiği (altın standart) burada sabitlenir; `train.py` bu eşiği geçemeyen modeli yayınlamaz. Eşik sonradan modele göre gevşetilmez.
+
+## 5. Problem ve Model Gereksinimi
+
+**v1'deki sınır:** Uyum yalnızca girişteki 3 sabit cevaba bağlıydı. "Yeni başladım" diyen herkes aynı ipucunu görüyordu. "Deneyimliyim" diyen ama paniğe kapılmış biri ise hiç yardım almıyordu.
+
+**v2 hedefi (dikey, göreve özel model):** Oyuncunun **o ana kadarki davranışından**, bulunduğu kararda **riskli seçeneği (B) seçme olasılığını** tahmin etmek. TikTok/Netflix'in "ne izlediğinden" öğrenmesi gibi, Primer de oyuncunun nasıl oynadığından öğrenir: ne kadar acele ettiği, açıklamaları okuyup okumadığı, tutordan kopya isteyip istemediği.
+
+| Özellik | Değer |
+| :--- | :--- |
+| **Görev** | İkili sınıflandırma: `riskli_secim` (1 = bu kararda B seçildi, 0 = A seçildi) |
+| **Model ailesi** | Küçük, yorumlanabilir: `StandardScaler` + `LogisticRegression` (sklearn) → ONNX |
+| **Girdi (7 özellik, sıra sabittir)** | `seviye`, `sahne_no`, `onceki_karar_suresi_sn`, `onceki_okuma_suresi_sn`, `onceki_riskli_sayisi`, `tutor_soru_sayisi`, `cevap_isteme_sayisi` (tanımlar: [`data/SOZLUK.md`](./data/SOZLUK.md)) |
+| **Çıktı** | `p_riskli` ∈ [0, 1] |
+| **Karar eşiği (oyunda)** | `p_riskli ≥ 0.50` → müdahale |
+| **Ne zaman çalışır?** | Her karar sahnesine girildiğinde ve oyuncu tutora her mesaj gönderdiğinde (yalnızca o ana kadar bilinen bilgiyle; mevcut kararın süresi kullanılmaz → sızıntı yok) |
+| **Çalıştığı yer** | Tarayıcı içinde `onnxruntime-web` (veri cihazdan çıkmaz) |
+
+### Modelin oyunu değiştirdiği yer (eşik geçilirse)
+1. **Risk Radarı kartı** açılır (`data-cy="risk-radar"`) ve olasılık gösterilir (`data-cy="p"`).
+2. **Sokratik Tutor proaktif devreye girer:** Oyuncu sormadan, kararı ele vermeyen bir yavaşlatma sorusu yazar.
+3. **"Deneyimliyim" modunda süre baskısı kalkar:** 60 sn sayaç durdurulur, çünkü acele riskli seçimin bir nedenidir.
+4. **"Yeni başladım" modunda anlatım derinleşir:** İpucu kartına ek bir "dikkat" satırı eklenir.
+
+Eşik geçilmezse oyun v1 gibi davranır. Bu, v1 testlerinin (regresyon) kırılmamasının da garantisidir.
+
+## 6. Eval Metriği ve Kabul Eşiği (Altın Standart)
+
+- **Veri ayrımı:** `oturum_id` bazında grup ayrımı (`GroupShuffleSplit`, test %25, `random_state=42`). Aynı oturumun kararları hem eğitimde hem testte olamaz.
+- **Birincil metrik:** Test kümesinde **ROC-AUC ≥ 0.70**
+- **İkincil metrik:** Karar eşiği 0.50'de riskli sınıf için **Recall ≥ 0.60** (riskli oyuncuyu kaçırmak, gereksiz müdahaleden daha pahalıdır)
+- **Artefakt eşiği:** ONNX ile sklearn olasılıkları arasındaki **maksimum mutlak fark ≤ 1e-4**
+- **Raporlanan ama kapı olmayan:** Yalnız `kaynak=gercek` satırlardaki AUC (gerçek veri az olduğu için bilgi amaçlı; model kartında sınır olarak yazılır)
+
+Üç kapıdan biri bile geçilmezse `train.py` **çıkış kodu 1** ile durur ve `model/` klasörüne hiçbir artefakt yazılmaz.
+
+## 7. v2 Kabul Örnekleri
+
+### Kabul Örneği 6: Acele eden oyuncuya model müdahale eder
+- **Given:** Oyuncu "Deneyimliyim" seçmiş. 1. ve 2. kararlarda B seçmiş, "Ne oldu?" kartını 2 sn'den kısa sürede geçmiş, tutora "cevabı söyle" yazmış. Şimdi Karar 3 · KVKK sahnesine giriyor.
+- **When:** Model sahne girişinde çalışır.
+- **Then:** `p_riskli ≥ 0.50` olur. Risk Radarı kartı görünür, `data-cy="p"` olasılığı gösterir, 60 sn sayaç durur ve tutor kararı ele vermeyen proaktif bir soru yazar.
+
+### Kabul Örneği 7: Dikkatli oyuncuya model karışmaz
+- **Given:** Oyuncu 1. ve 2. kararlarda A seçmiş, açıklamaları 8 sn'den uzun okumuş, kopya istememiş. Karar 3 sahnesine giriyor.
+- **When:** Model sahne girişinde çalışır.
+- **Then:** `p_riskli < 0.50` olur. Risk Radarı görünmez, sayaç ve tutor v1'deki gibi davranır. Aynı sahnede iki oyuncu iki farklı deneyim yaşar.
+
+### Kabul Örneği 8: Diferansiyel (parite) test
+- **Given:** [`tests/parite.json`](./tests/parite.json) içindeki 5 referans girdi ve Python (Oracle) ile `onnxruntime` kullanılarak hesaplanmış olasılıklar.
+- **When:** Aynı `model.onnx` tarayıcıda `onnxruntime-web` ile aynı 5 girdide çalıştırılır.
+- **Then:** Her girdi için `|p_tarayıcı − p_python| < 1e-4` olur. Ayrıca v1'in 9 E2E testi model devredeyken de geçer (regresyon).
